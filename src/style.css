@@ -384,6 +384,7 @@ input[type="number"] {
  */
 .date-native-input {
     font-family: inherit;
+    position: relative;
     -webkit-appearance: none;
     -moz-appearance: textfield;
     appearance: none;
@@ -405,11 +406,13 @@ input[type="number"] {
 }
 
 /*
- * Webkit 日历指示器：必须显式限定宽度，否则在窄屏下它会占用额外内联空间，
- * 把 input 撑出 w-1/2 列宽 → 这是 chrome 350px 下右列贴边的根因。
+ * 将 Webkit 原生日历指示器固定在右侧，避免它参与内联布局时遮挡窄屏日期文本。
  */
 .date-native-input::-webkit-calendar-picker-indicator {
-    width: 20px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2.5rem;
     height: 100%;
     margin: 0;
     padding: 0;
@@ -656,8 +659,12 @@ html.dark #captureRoot.exporting {
         margin-bottom: 0.15rem;
     }
 
+    #resultCard .amount-copy-row {
+        margin-top: 0.125rem;
+    }
+
     #resultCard .result-value-panel + .result-divider {
-        margin-top: 0.625rem;
+        margin-top: 0.5rem;
     }
 
     #resultCard .quote-panel {

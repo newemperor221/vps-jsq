@@ -658,6 +658,20 @@ function showToast(msg) {
     }, 2000);
 }
 
+function getBlackFriday(year) {
+    const novemberFirst = new Date(year, 10, 1);
+    const firstThursday = 1 + ((4 - novemberFirst.getDay() + 7) % 7);
+    const thanksgivingDay = firstThursday + 21;
+    return new Date(year, 10, thanksgivingDay + 1);
+}
+
+function getNextBlackFriday(date) {
+    const currentYearBlackFriday = getBlackFriday(date.getFullYear());
+    return date.getTime() < currentYearBlackFriday.getTime()
+        ? currentYearBlackFriday
+        : getBlackFriday(date.getFullYear() + 1);
+}
+
 function initDates() {
     const now = new Date();
     els.tradeDate.value = formatDate(now);
@@ -666,14 +680,7 @@ function initDates() {
         syncDateDisplay(els.dueDate);
         return;
     }
-    const currentYear = now.getFullYear();
-    const thisYearNov25 = new Date(currentYear, 10, 25); 
-    let targetDueDate;
-    if (now.getTime() <= thisYearNov25.getTime()) {
-        targetDueDate = thisYearNov25;
-    } else {
-        targetDueDate = new Date(currentYear + 1, 10, 25);
-    }
+    const targetDueDate = getNextBlackFriday(now);
     els.dueDate.value = formatDate(targetDueDate);
     syncDateDisplay(els.dueDate);
 }
